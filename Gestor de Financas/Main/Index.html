@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoneyMind.com.br</title>
+    <link rel="icon  type= "image href="logo.png">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-chart-line"></i>
+                <h1>MoneyMind</h1>
+            </div>
+            <nav class="nav">
+                <a href="#dashboard" class="nav-link active" data-section="dashboard">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="#Ganhos" class="nav-link" data-section="Ganhos">
+                    <i class="fas fa-coins"></i> Ganhos
+                </a>
+                <a href="#gastos" class="nav-link" data-section="gastos">
+                    <i class="fas fa-credit-card"></i> Gastos
+                </a>
+                <a href="#metas" class="nav-link" data-section="metas">
+                    <i class="fas fa-bullseye"></i> Metas
+                </a>
+                <a href="#investimentos" class="nav-link" data-section="investimentos">
+                    <i class="fas fa-chart-pie"></i> Investimentos
+                </a>
+            </nav>
+            <div class="user-info">
+                <div class="notifications">
+                    <i class="fas fa-bell notification-icon"></i>
+                    <span class="notification-badge">3</span>
+                </div>
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section active">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Dashboard Financeiro</h2>
+                    <p>Visão geral da sua situação financeira</p>
+                </div>
+
+                <!-- Cards de Resumo -->
+                <div class="summary-cards">
+                    <div class="card balance-card">
+                        <div class="card-icon">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Saldo Atual</h3>
+                            <p class="amount positive" id="saldo-atual">R$ 2.450,00</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card income-card">
+                        <div class="card-icon">
+                            <i class="fas fa-arrow-up"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Receitas (Mês)</h3>
+                            <p class="amount positive" id="receitas-mes">R$ 4.500,00</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card expense-card">
+                        <div class="card-icon">
+                            <i class="fas fa-arrow-down"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Gastos (Mês)</h3>
+                            <p class="amount negative" id="gastos-mes">R$ 2.050,00</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card goal-card">
+                        <div class="card-icon">
+                            <i class="fas fa-target"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Meta de Economia</h3>
+                            <p class="amount" id="meta-economia">R$ 1.000,00</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gráficos -->
+                <div class="charts-section">
+                    <div class="chart-container">
+                        <h3>Receitas vs Despesas</h3>
+                        <canvas id="receitasVsDespesas"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Gastos por Categoria</h3>
+                        <canvas id="gastosPorCategoria"></canvas>
+                    </div>
+                </div>
+
+                <!-- Alertas e Notificações -->
+                <div class="alerts-section">
+                    <h3>Alertas Importantes</h3>
+                    <div class="alert warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <div>
+                            <strong>Atenção!</strong> Você gastou 85% do seu orçamento de alimentação este mês.
+                        </div>
+                    </div>
+                    <div class="alert success">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>Parabéns!</strong> Você economizou R$ 200,00 em transporte este mês.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gastos Section -->
+        <section id="gastos" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Controle de Gastos</h2>
+                    <button class="btn-primary" id="add-expense-btn">
+                        <i class="fas fa-plus"></i> Adicionar Gasto
+                    </button>
+                </div>
+
+                <!-- Filtros -->
+                <div class="filters">
+                    <select id="category-filter">
+                        <option value="">Todas as categorias</option>
+                        <option value="alimentacao">Alimentação</option>
+                        <option value="transporte">Transporte</option>
+                        <option value="lazer">Lazer</option>
+                        <option value="saude">Saúde</option>
+                        <option value="educacao">Educação</option>
+                        <option value="outros">Outros</option>
+                    </select>
+                    <input type="date" id="date-filter">
+                </div>
+
+                <!-- Lista de Gastos -->
+                <div class="expenses-list" id="expenses-list">
+                    <!-- Gastos serão inseridos aqui via JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Metas Section -->
+        <section id="metas" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Metas Financeiras</h2>
+                    <button class="btn-primary" id="add-goal-btn">
+                        <i class="fas fa-plus"></i> Nova Meta
+                    </button>
+                </div>
+
+                <div class="goals-grid" id="goals-grid">
+                    <!-- Metas serão inseridas aqui via JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Investimentos Section -->
+        <section id="investimentos" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Sugestões de Investimentos</h2>
+                    <p>Baseado no seu perfil e situação financeira</p>
+                </div>
+
+                <div class="ai-assistant">
+                    <div class="ai-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="ai-message">
+                        <h3>Assistente IA</h3>
+                        <p id="ai-suggestion">Analisando seu perfil financeiro...</p>
+                        <button class="btn-secondary" id="get-ai-suggestion">
+                            <i class="fas fa-sync"></i> Nova Sugestão
+                        </button>
+                    </div>
+                </div>
+
+                <div class="investment-options">
+                    <div class="investment-card">
+                        <h4>Tesouro Direto</h4>
+                        <p>Baixo risco, ideal para reserva de emergência</p>
+                        <div class="investment-return">
+                            <span>Rentabilidade: 12,5% a.a.</span>
+                        </div>
+                    </div>
+                    <div class="investment-card">
+                        <h4>CDB</h4>
+                        <p>Renda fixa com boa liquidez</p>
+                        <div class="investment-return">
+                            <span>Rentabilidade: 13,2% a.a.</span>
+                        </div>
+                    </div>
+                    <div class="investment-card">
+                        <h4>Fundos de Investimento</h4>
+                        <p>Diversificação profissional</p>
+                        <div class="investment-return">
+                            <span>Rentabilidade: 15,8% a.a.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal para Adicionar Gasto -->
+    <div id="expense-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Adicionar Gasto</h3>
+                <span class="close" id="close-expense-modal">&times;</span>
+            </div>
+            <form id="expense-form">
+                <div class="form-group">
+                    <label for="expense-description">Descrição</label>
+                    <input type="text" id="expense-description" required>
+                </div>
+                <div class="form-group">
+                    <label for="expense-amount">Valor</label>
+                    <input type="number" id="expense-amount" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="expense-category">Categoria</label>
+                    <select id="expense-category" required>
+                        <option value="">Selecione uma categoria</option>
+                        <option value="alimentacao">Alimentação</option>
+                        <option value="transporte">Transporte</option>
+                        <option value="lazer">Lazer</option>
+                        <option value="saude">Saúde</option>
+                        <option value="educacao">Educação</option>
+                        <option value="outros">Outros</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="expense-date">Data</label>
+                    <input type="date" id="expense-date" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="cancel-expense">Cancelar</button>
+                    <button type="submit" class="btn-primary">Adicionar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para Adicionar Meta -->
+    <div id="goal-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Nova Meta Financeira</h3>
+                <span class="close" id="close-goal-modal">&times;</span>
+            </div>
+            <form id="goal-form">
+                <div class="form-group">
+                    <label for="goal-title">Título da Meta</label>
+                    <input type="text" id="goal-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="goal-amount">Valor Objetivo</label>
+                    <input type="number" id="goal-amount" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="goal-current">Valor Atual</label>
+                    <input type="number" id="goal-current" step="0.01" value="0">
+                </div>
+                <div class="form-group">
+                    <label for="goal-deadline">Data Limite</label>
+                    <input type="date" id="goal-deadline" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="cancel-goal">Cancelar</button>
+                    <button type="submit" class="btn-primary">Criar Meta</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Modal para adicionar ganhos-->
+    <div id="income-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Adicionar Ganho</h3>
+                <span class="close" id="close-income-modal">&times;</span>
+            </div>
+            <form id="income-form">
+                <div class="form-group">
+                    <label for="income-description">Descrição</label>
+                    <input type="text" id="income-description" required>
+                </div>
+                <div class="form-group">
+                    <label for="income-amount">Valor</label>
+                    <input type="number" id="income-amount" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="income-source">Fonte</label>
+                    <select id="income-source" required>
+                        <option value="">Selecione uma fonte</option>
+                        <option value="salario">Salário</option>
+                        <option value="freelance">Freelance</option>
+                        <option value="investimentos">Investimentos</option>
+                        <option value="outros">Outros</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="income-date">Data</label>
+                    <input type="date" id="income-date" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="cancel-income">Cancelar</button>
+                    <button type="submit" class="btn-primary">Adicionar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Notification Toast -->
+    <div id="notification-toast" class="notification-toast">
+        <div class="toast-content">
+            <i class="toast-icon"></i>
+            <span class="toast-message"></span>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
